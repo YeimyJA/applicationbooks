@@ -18,6 +18,7 @@ public class Author {
     private LocalDate death_year;
     @Transient
     private Book book;
+    
     public Long getId() {
         return Id;
     }

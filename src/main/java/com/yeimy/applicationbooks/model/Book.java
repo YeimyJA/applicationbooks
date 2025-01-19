@@ -1,7 +1,12 @@
 package com.yeimy.applicationbooks.model;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -11,7 +16,9 @@ public class Book {
         private int id;
         @Column(unique = true)
         private String title;
-        private String authors;
+        @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+        @JoinColumn(name = "book_id")    
+        private List<Author> authors;
         private String languages;
         private int download_count;
     
@@ -38,14 +45,6 @@ public class Book {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(String authors) {
-        this.authors = authors;
     }
 
     public String getLanguages() {
