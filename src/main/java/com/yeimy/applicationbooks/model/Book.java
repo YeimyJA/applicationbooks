@@ -1,40 +1,37 @@
 package com.yeimy.applicationbooks.model;
 
-import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "books")
 public class Book {
         @jakarta.persistence.Id
-        private int Id;
+        private int id;
         @Column(unique = true)
         private String title;
         private String authors;
         private String languages;
         private int download_count;
-        private String subjects;
-    
-    public Book(){}
     
     public Book(InformationBook informationBook){
-        this.title = informationBook.title();
-        this.authors = informationBook.authors();
-        this.download_count = informationBook.download_count();
-        this.languages = informationBook.languages();
+        id = informationBook.id();
+        title = informationBook.title();
+        authors = informationBook.authors();
+        download_count = informationBook.download_count();
+        languages = informationBook.languages();
+        //subjects= informationBook.subjects();
     }
-    
+
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
+
     public String getTitle() {
         return title;
     }
@@ -67,17 +64,9 @@ public class Book {
         this.download_count = download_count;
     }
 
-    public String getSubjects() {
-        return subjects;
-    }
-
-    public void setSubjects(String subjects) {
-        this.subjects = subjects;
-    }
-
     @Override
     public String toString() {
-        return "[Id=" + Id + ", title=" + title + ", authors=" + authors + ", languages=" + languages
-                + ", download_count=" + download_count + ", subjects=" + subjects;
+        return "Id=" + id + ", title=" + title + ", authors=" + authors + ", languages=" + languages + ", download_count=" + download_count;
     }
+
 }  

@@ -14,4 +14,12 @@ public class ConverterData implements IConvierteDatos {
             throw new RuntimeException(e);
         }
     }
+
+     public <T> T getInformationTree(String json) {
+         try {
+             return (T) objectMapper.readTree(json);
+         } catch (JsonProcessingException e) {
+             throw new RuntimeException(e);
+         }
+     }
 }
