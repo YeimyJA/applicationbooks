@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.yeimy.applicationbooks.model.Author;
 import com.yeimy.applicationbooks.model.Book;
 import com.yeimy.applicationbooks.model.InformationBook;
+import com.yeimy.applicationbooks.repository.AuthorRepository;
 import com.yeimy.applicationbooks.repository.BookRepository;
 import com.yeimy.applicationbooks.service.ConsumoAPI;
 import com.yeimy.applicationbooks.service.ConverterData;
@@ -17,6 +23,8 @@ public class Main {
     private ConverterData converter = new ConverterData();
     private List<Book> books  = new ArrayList<>();;
     private BookRepository repository;
+    @Autowired
+    private AuthorRepository authorRepository;
 
     public Main(BookRepository repository2) {
          this.repository = repository2;
@@ -49,10 +57,10 @@ public class Main {
                     showBookSearch();
                     break;
                 case 3:
-                    listBooks();
+                    listAuthors();
                     break;
                 case 4:
-                    listAuthors();
+                    authorsLiveInYear();
                     break;
                 case 5:
                     listForLanguages();
@@ -82,30 +90,45 @@ public class Main {
      }
     
       private void showBookSearch(){
-          books = repository.findAll();  
-          books.stream()
-             .sorted(Comparator.comparing(Book::getDownload_count))
-          .forEach(System.out::print);
+        List<Book> books = repository.findAll();  
+        for (Book book : books) {
+            System.out.println("****LIBRO****\n"+ "Titulo: "+book.getTitle()+"\nIdioma: "+book.getLanguages()+"\nNumero de descargas: "+book.getDownload_count()+"\n*************\n" + //
+                                "");  
+        }
       } 
 
-     private void listBooks(){
-        books = repository.findAll();  
-        books.stream()
-           .sorted(Comparator.comparing(Book::getDownload_count))
-        .forEach(System.out::print);
-     }
-
      private void listAuthors(){
-        books = repository.findAll();  
-        books.stream()
-           .sorted(Comparator.comparing(Book::getDownload_count))
-        .forEach(System.out::print);
+        List<Author> authors = authorRepository.findAll();
+        for (Author author : authors) {
+            System.out.println("Nombre: " + author.getName() + 
+                               ", Año de nacimiento: " + author.getBirth_year() + 
+                               ", Año de fallecimiento: " + author.getDeath_year());
+        }
     }
+
+    private void authorsLiveInYear(){
+        System.out.println("Ingrese el año vivo de autor(es) que desea buscar");
+        var userYear = keyboard.nextInt();
+        List<Author> authors = authorRepository.findAll();
+
+        List<Author> filteredYear = authors.stream()
+                .filter(author -> author.getBirth_year() != null)
+                .filter(author -> author.getBirth_year() >= userYear && author.getDeath_year() <= userYear)
+                .collect(Collectors.toList());
+        filteredYear.forEach(author -> System.out.println("Autor: " + author.getName()));
+   }
 
      private void listForLanguages(){
          System.out.println("Escribe el lenguaje del libro que desea ver");
          var userLenguage = keyboard.nextLine();
-         var json = consumoApi.getInformation(URL_BASE + "languages=" + userLenguage);
-        System.out.println(json.get("results").toString());   
+         List<Book> books = repository.findAll();
+         List<Book> filteredBooks = books.stream()
+            .filter(book ->book.getLanguages().contains(userLenguage))
+            .collect(Collectors.toList());
+            if (filteredBooks.isEmpty()) {
+                System.out.println("No se encontraron libros para el lenguaje: " + userLenguage);
+            } else {
+                filteredBooks.forEach(book -> System.out.println("Título: " + book.getTitle()));
+            }
     }
 }
