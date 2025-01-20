@@ -1,13 +1,10 @@
 package com.yeimy.applicationbooks.main;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.yeimy.applicationbooks.model.Author;
 import com.yeimy.applicationbooks.model.Book;
 import com.yeimy.applicationbooks.model.InformationBook;
@@ -16,12 +13,12 @@ import com.yeimy.applicationbooks.repository.BookRepository;
 import com.yeimy.applicationbooks.service.ConsumoAPI;
 import com.yeimy.applicationbooks.service.ConverterData;
 
+
 public class Main {
     private Scanner keyboard = new Scanner(System.in);
     private ConsumoAPI consumoApi = new ConsumoAPI();
     private final String URL_BASE = "https://gutendex.com/books/?";
     private ConverterData converter = new ConverterData();
-    private List<Book> books  = new ArrayList<>();;
     private BookRepository repository;
     @Autowired
     private AuthorRepository authorRepository;
