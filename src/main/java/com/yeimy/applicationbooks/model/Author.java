@@ -1,6 +1,8 @@
 package com.yeimy.applicationbooks.model;
 
 import java.time.LocalDate;
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,8 +16,8 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     private String name;
-    private LocalDate birth_year;
-    private LocalDate death_year;
+    private Integer birth_year;
+    private Integer death_year;
     @Transient
     private Book book;
     
@@ -31,16 +33,16 @@ public class Author {
     public void setName(String name) {
         this.name = name;
     }
-    public LocalDate getBirth_year() {
+    public Integer getBirth_year() {
         return birth_year;
     }
-    public void setBirth_year(LocalDate birth_year) {
+    public void setBirth_year(Integer birth_year) {
         this.birth_year = birth_year;
     }
-    public LocalDate getDeath_year() {
+    public Integer getDeath_year() {
         return death_year;
     }
-    public void setDeath_year(LocalDate death_year) {
+    public void setDeath_year(Integer death_year) {
         this.death_year = death_year;
     }
     public Book getBook() {

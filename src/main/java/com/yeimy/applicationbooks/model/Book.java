@@ -19,7 +19,7 @@ public class Book {
         @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
         @JoinColumn(name = "book_id")    
         private List<Author> authors;
-        private String languages;
+        private List<String> languages;
         private int download_count;
     
     public Book(InformationBook informationBook){
@@ -30,7 +30,8 @@ public class Book {
         languages = informationBook.languages();
         //subjects= informationBook.subjects();
     }
-
+    public Book(){}
+    
     public int getId() {
         return id;
     }
@@ -47,11 +48,11 @@ public class Book {
         this.title = title;
     }
 
-    public String getLanguages() {
+    public List<String> getLanguages() {
         return languages;
     }
 
-    public void setLanguages(String languages) {
+    public void setLanguages(List<String> languages) {
         this.languages = languages;
     }
 

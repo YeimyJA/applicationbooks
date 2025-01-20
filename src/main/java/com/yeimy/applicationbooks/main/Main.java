@@ -3,7 +3,6 @@ package com.yeimy.applicationbooks.main;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 import com.yeimy.applicationbooks.model.Book;
 import com.yeimy.applicationbooks.model.InformationBook;
@@ -27,6 +26,7 @@ public class Main {
         var opcion = -1;
         while (opcion != 0) {
             var menu = """
+                    Elija ula opción a través del número:
 
                     1 - Buscar libro por titulo 
                     2 - Listar libros registrados
@@ -35,6 +35,7 @@ public class Main {
                     5 - Listar libros por idioma
                                   
                     0 - Salir
+
                     """;
             System.out.println(menu);
             opcion = keyboard.nextInt();
@@ -69,7 +70,6 @@ public class Main {
         System.out.println("Escribe el nombre del libro que deseas buscar");
         var nameBook = keyboard.nextLine();
         var json = consumoApi.getInformation(URL_BASE + "search=" + nameBook.replace(" ", "%20"));
-        System.out.println(json.get("results").get(0).toString());
         InformationBook datos = converter.getInformation(json.get("results").get(0).toString(), InformationBook.class);
         return datos;
     }
@@ -78,8 +78,7 @@ public class Main {
            InformationBook datos = getInformationBook();
            Book book = new Book(datos);
            repository.save(book);
-           System.out.println(book.getId());
-           System.out.println(datos);
+           System.out.println("****LIBRO****\n"+ "Titulo: "+datos.title()+"\nAutor: "+datos.authors()+"\nIdioma: "+datos.languages()+"\nNumero de descargas: "+datos.download_count()+"\n*************");
      }
     
       private void showBookSearch(){
@@ -95,7 +94,7 @@ public class Main {
            .sorted(Comparator.comparing(Book::getDownload_count))
         .forEach(System.out::print);
      }
-     
+
      private void listAuthors(){
         books = repository.findAll();  
         books.stream()
